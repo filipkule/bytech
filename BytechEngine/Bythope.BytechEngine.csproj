@@ -5,6 +5,7 @@
     <Version>0.0.3</Version>
     <Authors>Bythope</Authors>
     <PackageIcon>logo.png</PackageIcon>
+    <Company>*</Company>
   </PropertyGroup>
 
   <ItemGroup>

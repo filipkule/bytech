@@ -9,12 +9,12 @@ namespace Bythope.BytechEngine {
 
         public BytechApplication() {
             Runtime = new Runtime();
-            Runtime.OnRun.FirstAsync().Subscribe(x => OnRun(Runtime));
+            Runtime.OnRun.FirstAsync().Subscribe(x => OnRun(Runtime.Bytech));
             Runtime.OnExit.FirstAsync().Subscribe(x => OnExit());
             Runtime.Setup();
         }
 
-        protected abstract void OnRun(Runtime runtime);
+        protected abstract void OnRun(IBytech bytech);
 
         protected abstract void OnExit();
         

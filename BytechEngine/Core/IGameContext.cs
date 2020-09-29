@@ -1,13 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
 using System.Reactive;
-using System.Text;
 
 namespace Bythope.BytechEngine.Core {
     public interface IGameContext : IGameScheduler {
 
-        IBytech Bytech { get; }
         IObservable<Unit> OnLoading { get; }
         IObservable<Unit> OnUnloading { get; }
         LaunchParameters LaunchParameters { get; }

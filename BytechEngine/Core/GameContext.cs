@@ -2,36 +2,26 @@
 using EcsRx.Scheduling;
 using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Text;
 
 namespace Bythope.BytechEngine.Core {
     public class GameContext : Game, IGameContext {
 
         public IObservable<Unit> OnLoading => _onLoading;
-
         public IObservable<Unit> OnUnloading { get; }
-
         public IObservable<ElapsedTime> OnPreRender => _onPreRender;
-
         public IObservable<ElapsedTime> OnRender => _onRender;
-
         public IObservable<ElapsedTime> OnPostRender => _onPostRender;
-
         public IObservable<ElapsedTime> OnPreUpdate => _onPreUpdate;
-
         public IObservable<ElapsedTime> OnUpdate => _onUpdate;
-
         public IObservable<ElapsedTime> OnPostUpdate => _onPostUpdate;
-
+        public IObservable<Unit> OnResume => _onResume;
+        public IObservable<Unit> OnPause => _onPause;
         public ElapsedTime ElapsedTime { get; private set; }
 
-        public IBytech Bytech { get; }
-
         private readonly Subject<ElapsedTime> _onPreRender, _onRender, _onPostRender, _onPreUpdate, _onUpdate, _onPostUpdate;
-        private readonly Subject<Unit> _onLoading;
+        private readonly Subject<Unit> _onLoading, _onResume, _onPause;
 
         public GameContext() {
             _onPreRender = new Subject<ElapsedTime>();
@@ -41,16 +31,24 @@ namespace Bythope.BytechEngine.Core {
             _onUpdate = new Subject<ElapsedTime>();
             _onPostUpdate = new Subject<ElapsedTime>();
             _onLoading = new Subject<Unit>();
+            _onResume = new Subject<Unit>();
+            _onPause = new Subject<Unit>();
             OnUnloading = Observable.FromEventPattern<EventArgs>(x => Exiting += x, x => Exiting -= x).FirstAsync().Select(x => Unit.Default);
-
-            Bytech = new Bytech(this);
-            // LOAD STANDARD THINGS FOR MONOGAME
         }
 
         protected override void LoadContent() {
-            // MONOGAME THINGS
             base.LoadContent();
             _onLoading.OnNext(Unit.Default);
+        }
+
+        protected override void OnActivated(object sender, EventArgs args) {
+            base.OnActivated(sender, args);
+            _onResume.OnNext(Unit.Default);
+        }
+
+        protected override void OnDeactivated(object sender, EventArgs args) {
+            base.OnDeactivated(sender, args);
+            _onPause.OnNext(Unit.Default);
         }
 
         protected override void Draw(GameTime gameTime) {

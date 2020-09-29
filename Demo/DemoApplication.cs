@@ -1,23 +1,19 @@
-﻿using Bythope.BytechEngine.Core;
-using Bythope.BytechEngine.Demo.Game.Systems;
+﻿
 
-using EcsRx.Infrastructure.Extensions;
-using EcsRx.Systems;
-using System;
+using Bythope.BytechEngine.Core;
+using Bythope.BytechEngine.Demo.Scenes;
 
 namespace Bythope.BytechEngine.Demo {
     public class DemoApplication : BytechApplication {
 
-        protected override void OnRun(Runtime runtime) {
-            runtime.EntityDatabase.GetCollection().CreateEntity();
-            var system = runtime.Container.Resolve<TestSystem>();
-            runtime.SystemExecutor.AddSystem(system);
-            var systems = runtime.SystemExecutor.Systems;
-            Console.WriteLine();
+        protected override void OnRun(IBytech bytech) {
+            bytech.Scenes.AddScene<MainScene>("main");
+            bytech.Scenes.Start("main");
         }
 
         protected override void OnExit() {
-            Console.WriteLine("exit");
+            
         }
+
     }
 }
