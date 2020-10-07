@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 
 namespace Bythope.BytechEngine.Core {
     class Bytech : IBytech {
@@ -68,8 +69,12 @@ namespace Bythope.BytechEngine.Core {
 
         public void Clean() {
             // clean entity collections and create default one
-            foreach(IEntityCollection collection in EntityDatabase.Collections) {
-                EntityDatabase.RemoveCollection(collection.Id, true);
+            List<int> idList = new List<int>();
+            foreach (IEntityCollection collection in EntityDatabase.Collections) {
+                idList.Add(collection.Id);
+            }
+            foreach (var id in idList) {
+                EntityDatabase.RemoveCollection(id, true);
             }
             EntityDatabase.CreateCollection(0);
 
